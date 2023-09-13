@@ -34,7 +34,7 @@ def config_login(key: bytes):
     conn.close()
 
 def adding_db(username: str, application: str, email: str, password: str):
-    id = md5(username.encode("utf-8")).hexdigest()
+    id = md5(application.encode("utf-8")).hexdigest()
     conn = sql.connect(".database.db")
     cursor = conn.cursor()
     cursor.execute("""
