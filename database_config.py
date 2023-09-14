@@ -4,7 +4,6 @@ from encrypting import hash256
 from secrets import compare_digest
 from hashlib import md5
 from cryptography.fernet import Fernet
-from pathlib import Path
 from random_password import clipboard_copy
 
 def creating_db():
@@ -29,7 +28,7 @@ def config_login(key: bytes):
     cursor = conn.cursor()
     cursor.execute("""
     INSERT INTO login VALUES (?)
-    """, (hash))
+    """, (hash,))
     conn.commit()
     cursor.close()
     conn.close()
@@ -63,7 +62,8 @@ def showing_db():
     SELECT * FROM credentials 
     """)
     data = cursor.fetchall()
-    df = DataFrame(data= data, index=False,columns=("id", "username", "application", "email", "password"))
+    indexes = [''] * len(data)
+    df = DataFrame(data= data, index=indexes,columns=("id", "username", "application", "email", "password"))
     df['password'] = '[hidden]'
     print(df)
     conn.commit()
@@ -92,6 +92,7 @@ def check_login(key: bytes) -> bool:
     SELECT hash from login
     """)
     hash = cursor.fetchone()[0]
+    print(hash, type(hash))
     hash_key = hash256(key)
     result = compare_digest(str(hash), hash_key)
     cursor.close()
@@ -101,20 +102,19 @@ def check_login(key: bytes) -> bool:
 
 def encrypting_db(key: bytes) -> None:
     f = Fernet(key= key)
-    with Path(".database.db", "rb") as file:
-        contents = file.read_bytes()
+    with open(".database.db", "rb") as file:
+        contents = file.read()
 
     contents = f.encrypt(contents)
 
-    with Path(".database.db", "wb") as file:
-        file.write_bytes(contents)
+    with open(".database.db", "wb") as file:
+        file.write(contents)
 
 def decrypting_db(key: bytes) -> None:
-    f = Fernet(key= key)
-    with Path(".database.db", "rb") as file:
-        contents = file.read_bytes()
+    with open(".database.db", "rb") as file2:
+        contents = file2.read()
 
-    contents = f.decrypt(contents)
+    contents = Fernet(key= key).decrypt(contents)
 
-    with Path(".database.db", "wb") as file:
-        file.write_bytes(contents)
+    with open(".database.db", "wb") as file:
+        file.write(contents)

@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from hashlib import sha256
 
 def hash256(input: bytes) -> str:
-    return sha256(input.encode("utf-8")).hexdigest()
+    return sha256(input).hexdigest()
 
 def load_salt() -> bytes:
     with open(".salt", "rb") as file:
@@ -19,7 +19,7 @@ def save_salt(salt_: bytes) -> bytes:
         salt = file.write(salt_)
     return salt
 
-def kdf(password: str) -> bytes:
+def kdf(password: bytes) -> bytes:
     #retrieves the salt and if it doesnt exist creates one
     if Path(".salt").exists():
         salt = load_salt()
