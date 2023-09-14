@@ -14,6 +14,16 @@ def random_password(length: int) -> str:
 
     return password
 
+def clipboard_copy(passwd: str) -> None:
+    if pyperclip.is_available():
+        pyperclip.copy(passwd)
+        print("Copied to clipboard.")
+    else:
+        try:
+            os.system(f"echo '{passwd}' | xclip -selection c")
+            print("Copied to clipboard.")
+        except:
+            print("Not copied to clipboard, you need to install 'xclip' in your system")
 
 if __name__ == "__main__":
     try:
@@ -24,11 +34,6 @@ if __name__ == "__main__":
 
         passwd = random_password(args.length) #generating the password
         print(f"Password: {passwd}")
-        if pyperclip.is_available():
-            pyperclip.copy(passwd)
-            print("Copied to clipboard.")
-        else:
-            os.system(f"echo '{passwd}' | xclip -selection c")
-            print("Copied to clipboard.")
+        clipboard_copy(passwd= passwd)
     except:
         print("An unexpected error has occurred.")

@@ -55,18 +55,33 @@ def deleting_db(username: str, application: str):
     cursor.close()
     conn.close()
 
+def showing_db():
+    conn = sql.connect(".database.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT * FROM credentials 
+    """)
+    data = cursor.fetchall()
+    blank_index = [''] * len(data)
+    df = DataFrame(data= data, index=False,columns=("id", "username", "application", "email", "password"))
+    print(df)
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 def check_login(key: bytes) -> bool:
     conn = sql.connect(".database.db")
     cursor = conn.cursor()
     cursor.execute("""
     SELECT hash from login
     """)
-    result = cursor.fetchone()[0]
+    hash = cursor.fetchone()[0]
+    hash_key = hash256(key)
+    result = compare_digest(hash, hash_key)
     cursor.close()
     conn.close()
 
-    hash = hash256(key)
-    return compare_digest(hash, result)
+    return result
 
 def encrypting_db(key: bytes) -> None:
     f = Fernet(key= key)
