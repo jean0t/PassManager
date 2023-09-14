@@ -44,6 +44,17 @@ def adding_db(username: str, application: str, email: str, password: str):
     cursor.close()
     conn.close()
 
+def deleting_db(username: str, application: str):
+    id = md5(application.encode("utf-8")).hexdigest()
+    conn = sql.connect(".database.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+    DELETE FROM credentials WHERE id = ? and username = ? 
+    """, (id[:5], username))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
 def check_login(key: bytes) -> bool:
     conn = sql.connect(".database.db")
     cursor = conn.cursor()

@@ -19,6 +19,22 @@ def save_salt(salt_: bytes) -> bytes:
         salt = file.write(salt_)
     return salt
 
+def encrypt_salt(key: bytes) -> bytes:
+    with open(".salt", "rb") as file: #read file to get the content
+        contents = file.read()
+
+    contents = Fernet(key= key).encrypt(contents) #encrypt and saves it again
+    with open(".salt", "wb") as file:
+        file.write(contents)
+
+def decrypt_salt(key: bytes) -> bytes:
+    with open(".salt", "rb") as file: #read file to get the content
+        contents = file.read()
+
+    contents = Fernet(key= key).decrypt(contents) #decrypt and saves it again
+    with open(".salt", "wb") as file:
+        file.write(contents)
+
 def kdf(password: str) -> bytes:
     #retrieves the salt and if it doesnt exist creates one
     if Path(".salt").exists():
