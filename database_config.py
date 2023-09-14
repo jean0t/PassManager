@@ -5,6 +5,7 @@ from secrets import compare_digest
 from hashlib import md5
 from cryptography.fernet import Fernet
 from pathlib import Path
+from random_password import clipboard_copy
 
 def creating_db():
     try:
@@ -49,7 +50,7 @@ def deleting_db(username: str, application: str):
     conn = sql.connect(".database.db")
     cursor = conn.cursor()
     cursor.execute("""
-    DELETE FROM credentials WHERE id = ? and username = ? 
+    DELETE FROM credentials WHERE id = ? AND username = ? 
     """, (id[:5], username))
     conn.commit()
     cursor.close()
@@ -62,9 +63,24 @@ def showing_db():
     SELECT * FROM credentials 
     """)
     data = cursor.fetchall()
-    blank_index = [''] * len(data)
     df = DataFrame(data= data, index=False,columns=("id", "username", "application", "email", "password"))
+    df['password'] = '[hidden]'
     print(df)
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def copying_passwd_db(id: str, username: str) -> str:
+    conn = sql.connect(".database.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT * FROM credentials 
+    """)
+    data = cursor.fetchall()
+    for element in data:
+        if (id == element[0] and username == element[1]):
+            clipboard_copy(element[4])
+        
     conn.commit()
     cursor.close()
     conn.close()
@@ -77,7 +93,7 @@ def check_login(key: bytes) -> bool:
     """)
     hash = cursor.fetchone()[0]
     hash_key = hash256(key)
-    result = compare_digest(hash, hash_key)
+    result = compare_digest(str(hash), hash_key)
     cursor.close()
     conn.close()
 
