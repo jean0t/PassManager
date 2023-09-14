@@ -13,10 +13,10 @@ def leaving():
     for i in range(5):
         string = "leaving"
         print(string + "."*i, end="\r")
-        sleep(0.5)
+        sleep(0.3)
     print()
 
-def menu():
+def menu(key: bytes):
     again = 'y'
 
     while (again == 'y'):
@@ -83,6 +83,11 @@ def menu():
                     else:
                         sleep(2)
                 
+                case 5:
+                    encrypting_db(key= key)
+                    leaving()
+                    sys.exit()
+
                 case _:
                     raise ValueError
         except:
@@ -115,7 +120,7 @@ def main():
             encrypting_db(key= key)
             sys.exit()
 
-    menu()
+    menu(key= key)
 
     encrypting_db(key= key)
 
