@@ -90,7 +90,6 @@ def menu():
         
         again = input("Continue? (y/n) ").strip().lower()
 
-
 def main():
     print("===================")
     print("Password Manager")
@@ -119,8 +118,6 @@ def main():
     menu()
 
     encrypting_db(key= key)
-        
-
 
 if __name__ == "__main__":
     main()
