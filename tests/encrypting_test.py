@@ -1,8 +1,8 @@
+from pathlib import Path
 import sys
-sys.path.append("..")
+sys.path.append(Path(".").resolve().as_posix())
 from encrypting import *
 import unittest
-from pathlib import Path
 import os
 
 class TestClass(unittest.TestCase):
@@ -23,3 +23,6 @@ class TestClass(unittest.TestCase):
 
         self.assertEqual(kdf1, kdf2, msg="Same password didn't produce the same key")
         self.assertNotEqual(kdf1, kdf3, msg="Different password resulted in same key")
+
+if __name__ == "__main__":
+    unittest.main()
