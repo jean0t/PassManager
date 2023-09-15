@@ -1,8 +1,6 @@
 from random_password import random_password, clipboard_copy
 from database_config import *
 from encrypting import *
-from cryptography.fernet import Fernet
-from pandas import DataFrame
 import maskpass
 from pathlib import Path
 import sys
@@ -122,6 +120,7 @@ def main():
 
     menu(key= key)
 
+    system("clear")
     encrypting_db(key= key)
 
 if __name__ == "__main__":
