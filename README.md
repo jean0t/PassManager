@@ -1,6 +1,6 @@
 # PasswordManager-Py
 
-## An incredible Cli (and future Gui) password manager
+## An incredible ClI password manager
 
 *It has the capability to cryptograph your data and keep it safe from others, since it will be kept safe in a secure database protected by a password.*
 
