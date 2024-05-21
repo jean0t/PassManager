@@ -27,3 +27,10 @@ ps: not sure if it will work in windows, but i will work for it to happen in the
 - [ ]  Making a GUI to use
 - [ ]  Adding new functionalities
 - [x]  CLI usability
+
+
+
+## Example of use
+
+https://github.com/jean0t/PasswordManager-Py/assets/127698173/ff42cf73-2dbb-4d6d-8a4d-799d2f2f214b
+
