@@ -1,11 +1,9 @@
-from pathlib import Path
-import sys
-sys.path.append(Path(".").resolve().as_posix())
-from encrypting import *
+from src.encrypting import *
+from src.random_password import *
 import unittest
 import os
 
-class TestClass(unittest.TestCase):
+class TestEncryptation(unittest.TestCase):
     def test_hash256(self):
         hash1 = hash256(b"car")
         hash2 = hash256(b"dog")
@@ -23,6 +21,14 @@ class TestClass(unittest.TestCase):
 
         self.assertEqual(kdf1, kdf2, msg="Same password didn't produce the same key")
         self.assertNotEqual(kdf1, kdf3, msg="Different password resulted in same key")
+
+
+class TestRandomPassword(unittest.TestCase):
+	def test_random_password(self):
+		password1 = random_password(15)
+		password2 = random_password(15)
+
+		self.assertNotEqual(password1, password2, "Both passwords are equal")
 
 if __name__ == "__main__":
     unittest.main()
