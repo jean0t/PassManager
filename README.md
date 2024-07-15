@@ -7,13 +7,13 @@
 ## How to use
 First of all clone the repository
 ```git
-git clone git@github.com:jean0t/PasswordManager-Py.git passwd_mng
+git clone git@github.com:jean0t/PasswordManager-Py.git password_manager
 ```
+after clonning the repository, you can check the requirements.txt to see the modules avaiable, if they are all installed, you can run the file `run.py`
 
-after that enter the directory and run the file with the name `main.py` after having all the modules listed in requirements.txt installed
 ```shell
-cd passwd_mng
-python main.py
+cd password_manager
+python run.py
 ```
 
 ## Modules used:
