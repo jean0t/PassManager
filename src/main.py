@@ -111,7 +111,7 @@ def main():
         password = password.encode("utf-8")
         key = kdf(password= password)
         decrypting_db(key= key)
-        if not check_login:
+        if not check_login(key):
             print("Wrong password\n")
             leaving()
             system("clear")
